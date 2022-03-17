@@ -1,8 +1,15 @@
+enum ActivePlayer {
+  X,
+  O,
+}
+
 class Board {
   private boardTiles = 9;
 
   private rootContainer = document.querySelector(".root") as HTMLDivElement;
   private players = ["X", "O"];
+  private Active = ActivePlayer.O;
+
   constructor() {
     this.buildTiles();
     this.onTileClick();
@@ -21,9 +28,13 @@ class Board {
   }
 
   onTileClick() {
-    this.rootContainer.addEventListener("click", (e) => {
-      console.log(e.target);
-    });
+    if (this.Active === ActivePlayer.O)
+      this.rootContainer.addEventListener("click", (e) => {
+        console.log(e.target);
+      });
+    if (this.Active === ActivePlayer.X) {
+      console.log("X");
+    }
   }
 }
 
