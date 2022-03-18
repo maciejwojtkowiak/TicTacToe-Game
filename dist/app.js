@@ -8,9 +8,8 @@ class Board {
     constructor() {
         this.boardTiles = 9;
         this.rootContainer = document.querySelector(".root");
-        this.players = ["X", "O"];
         this.active = ActivePlayer.O;
-        this.cells = document.querySelectorAll("[data-number]");
+        this.chosenNumbers = { O: [], X: [] };
         this.winningConditions = [
             [0, 1, 2],
             [3, 4, 5],
@@ -36,15 +35,22 @@ class Board {
             this.rootContainer.appendChild(tile);
         }
     }
+    checkWinner() {
+        return this.winningConditions.some((condition) => {
+            return condition.every((element) => {
+                return this.chosenNumbers.O.includes(element.toString());
+            });
+        });
+    }
     onTileClick() {
         this.rootContainer.addEventListener("click", (e) => {
             const tile = e.target;
             if (tile.classList.contains("tile")) {
-                console.log(tile);
-                console.log(this.cells);
                 if (this.active === ActivePlayer.O) {
                     tile.style.backgroundColor = "green";
-                    this.winningConditions.some((combination) => combination.every((index) => console.log(index)));
+                    const dataNumber = tile.getAttribute("data-number");
+                    this.chosenNumbers.O.push(dataNumber);
+                    console.log(this.checkWinner());
                 }
                 if (this.active === ActivePlayer.X) {
                     tile.style.backgroundColor = "black";
@@ -52,6 +58,11 @@ class Board {
             }
         });
     }
-    changePlayer() { }
+    changePlayer() {
+        if (this.active === ActivePlayer.X)
+            this.active = ActivePlayer.O;
+        if (this.active === ActivePlayer.O)
+            this.active = ActivePlayer.X;
+    }
 }
 const TicTacToeBoard = new Board();

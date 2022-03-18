@@ -42,6 +42,13 @@ class Board {
     }
   }
 
+  checkWinner() {
+    return this.winningConditions.some((condition) => {
+      return condition.every((element) => {
+        return this.chosenNumbers.O.includes(element.toString());
+      });
+    });
+  }
   onTileClick() {
     this.rootContainer.addEventListener("click", (e: Event) => {
       const tile = e.target as HTMLDivElement;
@@ -49,15 +56,12 @@ class Board {
         if (this.active === ActivePlayer.O) {
           tile.style.backgroundColor = "green";
           const dataNumber = tile.getAttribute("data-number");
+
           this.chosenNumbers.O.push(dataNumber!);
-          this.winningConditions.some((combination) =>
-            combination.every((index) => console.log(index))
-          );
-          this.changePlayer();
+          console.log(this.checkWinner());
         }
         if (this.active === ActivePlayer.X) {
           tile.style.backgroundColor = "black";
-          this.changePlayer();
         }
       }
     });
