@@ -14,6 +14,31 @@ interface PlayerAction {
   chosenNumbersByPlayer: string[];
 }
 
+class Tile {
+  private color: string;
+  private index: number;
+  private width = "100px";
+  private height = "100px";
+
+  private rootContainer = document.querySelector(".root") as HTMLDivElement;
+  constructor(color: string, index: number) {
+    this.color = color;
+    this.index = index;
+    this.buildTile();
+  }
+
+  buildTile() {
+    const tile = document.createElement("div");
+    tile.dataset.number = this.index.toString();
+    tile.classList.add("tile");
+    tile.innerText = "hi";
+    tile.style.height = this.width;
+    tile.style.width = this.height;
+    tile.style.backgroundColor = this.color;
+    this.rootContainer.appendChild(tile);
+  }
+}
+
 class Board {
   private boardTiles = 9;
   private rootContainer = document.querySelector(".root") as HTMLDivElement;
@@ -37,14 +62,7 @@ class Board {
 
   buildTiles() {
     for (let i = 0; i < this.boardTiles; i++) {
-      let tile = document.createElement("div");
-      tile.dataset.number = i.toString();
-      tile.classList.add("tile");
-      tile.innerText = "hi";
-      tile.style.height = "100px";
-      tile.style.width = "100px";
-      tile.style.backgroundColor = "yellow";
-      this.rootContainer.appendChild(tile);
+      new Tile("yellow", i);
     }
   }
 
