@@ -8,10 +8,16 @@ interface ChosenNumbers {
   X: string[];
 }
 
+interface PlayerAction {
+  tile: HTMLDivElement;
+  color: string;
+  chosenNumbersByPlayer: string[];
+}
+
 class Board {
   private boardTiles = 9;
   private rootContainer = document.querySelector(".root") as HTMLDivElement;
-  private active = ActivePlayer.O;
+  active = false;
   private chosenNumbers: ChosenNumbers = { O: [], X: [] };
   private winningConditions = [
     [0, 1, 2],
@@ -42,10 +48,10 @@ class Board {
     }
   }
 
-  checkWinner() {
+  checkWinner(playerNumbers: string[]) {
     return this.winningConditions.some((condition) => {
       return condition.every((element) => {
-        return this.chosenNumbers.O.includes(element.toString());
+        return playerNumbers.includes(element.toString());
       });
     });
   }
@@ -53,23 +59,38 @@ class Board {
     this.rootContainer.addEventListener("click", (e: Event) => {
       const tile = e.target as HTMLDivElement;
       if (tile.classList.contains("tile")) {
-        if (this.active === ActivePlayer.O) {
-          tile.style.backgroundColor = "green";
-          const dataNumber = tile.getAttribute("data-number");
-
-          this.chosenNumbers.O.push(dataNumber!);
-          console.log(this.checkWinner());
+        if (this.active) {
+          this.playerClicked({
+            tile: tile,
+            color: "green",
+            chosenNumbersByPlayer: this.chosenNumbers.X,
+          });
         }
-        if (this.active === ActivePlayer.X) {
-          tile.style.backgroundColor = "black";
+        if (!this.active) {
+          this.playerClicked({
+            tile: tile,
+            color: "blue",
+            chosenNumbersByPlayer: this.chosenNumbers.O,
+          });
         }
       }
     });
   }
 
   changePlayer() {
-    if (this.active === ActivePlayer.X) this.active = ActivePlayer.O;
-    if (this.active === ActivePlayer.O) this.active = ActivePlayer.X;
+    this.active = true;
+  }
+
+  playerClicked(playerAction: PlayerAction) {
+    playerAction.tile.style.backgroundColor = playerAction.color;
+
+    const dataNumber = playerAction.tile.getAttribute("data-number");
+    playerAction.chosenNumbersByPlayer.push(dataNumber!);
+
+    if (this.checkWinner(playerAction.chosenNumbersByPlayer)) {
+      console.log("won");
+      this.changePlayer();
+    }
   }
 }
 

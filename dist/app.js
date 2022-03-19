@@ -8,7 +8,7 @@ class Board {
     constructor() {
         this.boardTiles = 9;
         this.rootContainer = document.querySelector(".root");
-        this.active = ActivePlayer.O;
+        this.active = false;
         this.chosenNumbers = { O: [], X: [] };
         this.winningConditions = [
             [0, 1, 2],
@@ -35,10 +35,10 @@ class Board {
             this.rootContainer.appendChild(tile);
         }
     }
-    checkWinner() {
+    checkWinner(playerNumbers) {
         return this.winningConditions.some((condition) => {
             return condition.every((element) => {
-                return this.chosenNumbers.O.includes(element.toString());
+                return playerNumbers.includes(element.toString());
             });
         });
     }
@@ -46,23 +46,34 @@ class Board {
         this.rootContainer.addEventListener("click", (e) => {
             const tile = e.target;
             if (tile.classList.contains("tile")) {
-                if (this.active === ActivePlayer.O) {
-                    tile.style.backgroundColor = "green";
-                    const dataNumber = tile.getAttribute("data-number");
-                    this.chosenNumbers.O.push(dataNumber);
-                    console.log(this.checkWinner());
+                if (this.active) {
+                    this.playerClicked({
+                        tile: tile,
+                        color: "green",
+                        chosenNumbersByPlayer: this.chosenNumbers.X,
+                    });
                 }
-                if (this.active === ActivePlayer.X) {
-                    tile.style.backgroundColor = "black";
+                if (!this.active) {
+                    this.playerClicked({
+                        tile: tile,
+                        color: "blue",
+                        chosenNumbersByPlayer: this.chosenNumbers.O,
+                    });
                 }
             }
         });
     }
     changePlayer() {
-        if (this.active === ActivePlayer.X)
-            this.active = ActivePlayer.O;
-        if (this.active === ActivePlayer.O)
-            this.active = ActivePlayer.X;
+        this.active = true;
+    }
+    playerClicked(playerAction) {
+        playerAction.tile.style.backgroundColor = playerAction.color;
+        const dataNumber = playerAction.tile.getAttribute("data-number");
+        playerAction.chosenNumbersByPlayer.push(dataNumber);
+        if (this.checkWinner(playerAction.chosenNumbersByPlayer)) {
+            console.log("won");
+            this.changePlayer();
+        }
     }
 }
 const TicTacToeBoard = new Board();
