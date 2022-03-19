@@ -63,22 +63,24 @@ class Board {
           this.playerClicked({
             tile: tile,
             color: "green",
-            chosenNumbersByPlayer: this.chosenNumbers.X,
+            chosenNumbersByPlayer: this.chosenNumbers.O,
           });
         }
         if (!this.active) {
           this.playerClicked({
             tile: tile,
             color: "blue",
-            chosenNumbersByPlayer: this.chosenNumbers.O,
+            chosenNumbersByPlayer: this.chosenNumbers.X,
           });
         }
       }
+      this.changePlayer();
     });
   }
 
   changePlayer() {
-    this.active = true;
+    this.active = !this.active;
+    console.log(this.active);
   }
 
   playerClicked(playerAction: PlayerAction) {
@@ -86,11 +88,8 @@ class Board {
 
     const dataNumber = playerAction.tile.getAttribute("data-number");
     playerAction.chosenNumbersByPlayer.push(dataNumber!);
-
-    if (this.checkWinner(playerAction.chosenNumbersByPlayer)) {
-      console.log("won");
-      this.changePlayer();
-    }
+    const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
+    if (playerWon) console.log("won");
   }
 }
 
