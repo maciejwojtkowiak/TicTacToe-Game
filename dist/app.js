@@ -1,29 +1,9 @@
-"use strict";
+import { Tile } from "./Tile.js";
 var ActivePlayer;
 (function (ActivePlayer) {
     ActivePlayer[ActivePlayer["X"] = 0] = "X";
     ActivePlayer[ActivePlayer["O"] = 1] = "O";
 })(ActivePlayer || (ActivePlayer = {}));
-class Tile {
-    constructor(color, index) {
-        this.width = "100px";
-        this.height = "100px";
-        this.rootContainer = document.querySelector(".root");
-        this.color = color;
-        this.index = index;
-        this.buildTile();
-    }
-    buildTile() {
-        const tile = document.createElement("div");
-        tile.dataset.number = this.index.toString();
-        tile.classList.add("tile");
-        tile.innerText = "hi";
-        tile.style.height = this.width;
-        tile.style.width = this.height;
-        tile.style.backgroundColor = this.color;
-        this.rootContainer.appendChild(tile);
-    }
-}
 class Board {
     constructor() {
         this.boardTiles = 9;

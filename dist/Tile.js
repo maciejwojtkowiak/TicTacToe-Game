@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tile = void 0;
-class Tile {
+export class Tile {
     constructor(color, index) {
         this.width = "100px";
         this.height = "100px";
@@ -21,4 +18,3 @@ class Tile {
         this.rootContainer.appendChild(tile);
     }
 }
-exports.Tile = Tile;
