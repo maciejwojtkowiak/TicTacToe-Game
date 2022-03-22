@@ -87,7 +87,15 @@ export class Board {
     }
     resetGame() {
         const tiles = document.querySelectorAll(".tile");
-        console.log(tiles);
+        tiles.forEach((tile) => {
+            if (tile.classList.contains("tileX"))
+                tile.classList.remove("tileX");
+            if (tile.classList.contains("tileO"))
+                tile.classList.remove("tileO");
+            return;
+        });
+        this.chosenNumbers.O.splice(0, this.chosenNumbers.O.length);
+        this.chosenNumbers.X.splice(0, this.chosenNumbers.X.length);
     }
 }
 new Board();
