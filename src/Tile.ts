@@ -1,12 +1,10 @@
 export class Tile {
-  private color: string;
   private index: number;
   private width = "100px";
   private height = "100px";
 
   private rootContainer = document.querySelector(".root") as HTMLDivElement;
-  constructor(color: string, index: number) {
-    this.color = color;
+  constructor(index: number) {
     this.index = index;
     this.buildTile();
   }
@@ -18,7 +16,7 @@ export class Tile {
     tile.innerText = "hi";
     tile.style.height = this.width;
     tile.style.width = this.height;
-    tile.style.backgroundColor = this.color;
+
     this.rootContainer.appendChild(tile);
   }
 }

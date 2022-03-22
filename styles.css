@@ -12,6 +12,18 @@ body {
   width: 100%;
 }
 
+.tile {
+  background-color: yellow;
+}
+
+.tileX {
+  background-color: blue;
+}
+
+.tileO {
+  background-color: green;
+}
+
 .root {
   display: grid;
   place-items: center;

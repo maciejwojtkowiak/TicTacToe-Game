@@ -24,8 +24,8 @@ export class Board {
         this.onTileClick();
     }
     buildTiles() {
-        for (let i = 0; i < this.boardTiles; i++) {
-            new Tile("yellow", i);
+        for (let index = 0; index < this.boardTiles; index++) {
+            new Tile(index);
         }
     }
     startingPlayer() {
@@ -49,14 +49,12 @@ export class Board {
                 if (this.active === ActivePlayer.O) {
                     this.playerClicked({
                         tile: tile,
-                        color: "green",
                         chosenNumbersByPlayer: this.chosenNumbers.O,
                     });
                 }
                 if (this.active === ActivePlayer.X) {
                     this.playerClicked({
                         tile: tile,
-                        color: "blue",
                         chosenNumbersByPlayer: this.chosenNumbers.X,
                     });
                 }
@@ -67,21 +65,29 @@ export class Board {
     changePlayer() {
         this.active =
             this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
+        console.log(this.active);
     }
     playerClicked(playerAction) {
-        playerAction.tile.style.backgroundColor = playerAction.color;
+        playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "tileX" : "tileO"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
         playerAction.chosenNumbersByPlayer.push(dataNumber);
         const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
         if (playerWon)
-            this.playerWon();
+            this.playerWon(this.active);
     }
-    playerWon() {
+    playerWon(activePlayer) {
         const modal = document.querySelector(".modal");
         modal.classList.add("modal-container");
+        modal.innerText =
+            activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
         modal.addEventListener("click", () => {
             modal.classList.remove("modal-container");
+            this.resetGame();
         });
+    }
+    resetGame() {
+        const tiles = document.querySelectorAll(".tile");
+        console.log(tiles);
     }
 }
 new Board();
