@@ -6,6 +6,7 @@ export enum ActivePlayer {
 export interface ChosenNumbers {
   O: string[];
   X: string[];
+  total: string[];
 }
 
 export interface PlayerAction {

@@ -5,7 +5,7 @@ export class Board {
         this.boardTiles = 9;
         this.rootContainer = document.querySelector(".root");
         this.active = ActivePlayer.O;
-        this.chosenNumbers = { O: [], X: [] };
+        this.chosenNumbers = { O: [], X: [], total: [] };
         this.winningConditions = [
             [0, 1, 2],
             [3, 4, 5],
@@ -38,6 +38,9 @@ export class Board {
             });
         });
     }
+    checkDraw() {
+        return this.chosenNumbers.total.length === this.boardTiles;
+    }
     onTileClick() {
         this.rootContainer.addEventListener("click", (e) => {
             const tile = e.target;
@@ -66,16 +69,23 @@ export class Board {
         playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "cross" : "circle"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
         playerAction.chosenNumbersByPlayer.push(dataNumber);
+        this.chosenNumbers.total.push(dataNumber);
         const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
-        if (playerWon)
-            this.playerWon(this.active);
+        const isDraw = !playerWon && this.checkDraw();
+        if (playerWon || isDraw)
+            this.showModal(this.active, isDraw);
     }
-    playerWon(activePlayer) {
+    showModal(activePlayer, isDraw) {
         const modal = document.querySelector(".modal");
         const modalBox = document.querySelector(".modal-box");
         modal.classList.toggle("hidden");
-        modalBox.innerText =
-            activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
+        if (!isDraw) {
+            modalBox.innerText =
+                activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
+        }
+        if (isDraw) {
+            modalBox.innerText = "DRAW";
+        }
         modal.addEventListener("click", () => {
             modal.classList.toggle("hidden");
             modalBox.innerText = "";
