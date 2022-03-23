@@ -22,6 +22,7 @@ export class Board {
   constructor() {
     this.buildTiles();
     this.onTileClick();
+    this.headerContent();
   }
 
   buildTiles() {
@@ -88,19 +89,23 @@ export class Board {
   showModal(activePlayer: ActivePlayer, isDraw: boolean) {
     const modal = document.querySelector(".modal") as HTMLDivElement;
     const modalBox = document.querySelector(".modal-box") as HTMLDivElement;
-    modal.classList.toggle("hidden");
+    const restartButton = document.querySelector(
+      ".restart-button"
+    ) as HTMLButtonElement;
+    const message = document.createElement("p");
+    modalBox.appendChild(message);
+    modal.classList.remove("hidden");
     if (!isDraw) {
-      modalBox.innerText =
-        activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
+      message.innerText = `${activePlayer} has won`;
     }
 
     if (isDraw) {
-      modalBox.innerText = "DRAW";
+      message.innerText = "Draw";
     }
 
-    modal.addEventListener("click", () => {
-      modal.classList.toggle("hidden");
-      modalBox.innerText = "";
+    restartButton.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      message.innerText = "";
       this.resetGame();
     });
   }
@@ -115,12 +120,12 @@ export class Board {
 
     this.chosenNumbers.O.splice(0, this.chosenNumbers.O.length);
     this.chosenNumbers.X.splice(0, this.chosenNumbers.X.length);
+    this.chosenNumbers.total.splice(0, this.chosenNumbers.total.length);
   }
 
   headerContent() {
     const header = document.querySelector(".header") as HTMLHeadingElement;
     header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
-    console.log(header);
   }
 }
 
