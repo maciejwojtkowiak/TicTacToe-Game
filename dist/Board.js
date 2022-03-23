@@ -1,9 +1,5 @@
 import { Tile } from "./Tile.js";
-var ActivePlayer;
-(function (ActivePlayer) {
-    ActivePlayer[ActivePlayer["X"] = 0] = "X";
-    ActivePlayer[ActivePlayer["O"] = 1] = "O";
-})(ActivePlayer || (ActivePlayer = {}));
+import { ActivePlayer } from "./Types.js";
 export class Board {
     constructor() {
         this.boardTiles = 9;
@@ -65,10 +61,9 @@ export class Board {
     changePlayer() {
         this.active =
             this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
-        console.log(this.active);
     }
     playerClicked(playerAction) {
-        playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "tileX" : "tileO"}`);
+        playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "cross" : "circle"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
         playerAction.chosenNumbersByPlayer.push(dataNumber);
         const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
@@ -77,25 +72,32 @@ export class Board {
     }
     playerWon(activePlayer) {
         const modal = document.querySelector(".modal");
-        modal.classList.add("modal-container");
-        modal.innerText =
+        const modalBox = document.querySelector(".modal-box");
+        modal.classList.toggle("hidden");
+        modalBox.innerText =
             activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
         modal.addEventListener("click", () => {
-            modal.classList.remove("modal-container");
+            modal.classList.toggle("hidden");
+            modalBox.innerText = "";
             this.resetGame();
         });
     }
     resetGame() {
         const tiles = document.querySelectorAll(".tile");
         tiles.forEach((tile) => {
-            if (tile.classList.contains("tileX"))
-                tile.classList.remove("tileX");
-            if (tile.classList.contains("tileO"))
-                tile.classList.remove("tileO");
+            if (tile.classList.contains("cross"))
+                tile.classList.remove("cross");
+            if (tile.classList.contains("circle"))
+                tile.classList.remove("circle");
             return;
         });
         this.chosenNumbers.O.splice(0, this.chosenNumbers.O.length);
         this.chosenNumbers.X.splice(0, this.chosenNumbers.X.length);
+    }
+    headerContent() {
+        const header = document.querySelector(".header");
+        header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
+        console.log(header);
     }
 }
 new Board();

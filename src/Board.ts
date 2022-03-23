@@ -1,24 +1,12 @@
 import { Tile } from "./Tile.js";
-enum ActivePlayer {
-  X,
-  O,
-}
-
-interface ChosenNumbers {
-  O: string[];
-  X: string[];
-}
-
-interface PlayerAction {
-  tile: HTMLDivElement;
-
-  chosenNumbersByPlayer: string[];
-}
+import { ActivePlayer } from "./Types.js";
+import { ChosenNumbers } from "./Types.js";
+import { PlayerAction } from "./Types.js";
 
 export class Board {
   private boardTiles = 9;
   private rootContainer = document.querySelector(".root") as HTMLDivElement;
-  private active: ActivePlayer = ActivePlayer.O;
+  protected active: ActivePlayer = ActivePlayer.O;
   private chosenNumbers: ChosenNumbers = { O: [], X: [] };
   private winningConditions = [
     [0, 1, 2],
@@ -79,12 +67,11 @@ export class Board {
   changePlayer() {
     this.active =
       this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
-    console.log(this.active);
   }
 
   playerClicked(playerAction: PlayerAction) {
     playerAction.tile.classList.add(
-      `${this.active === ActivePlayer.X ? "tileX" : "tileO"}`
+      `${this.active === ActivePlayer.X ? "cross" : "circle"}`
     );
 
     const dataNumber = playerAction.tile.getAttribute("data-number");
@@ -95,12 +82,14 @@ export class Board {
 
   playerWon(activePlayer: ActivePlayer) {
     const modal = document.querySelector(".modal") as HTMLDivElement;
-    modal.classList.add("modal-container");
-    modal.innerText =
+    const modalBox = document.querySelector(".modal-box") as HTMLDivElement;
+    modal.classList.toggle("hidden");
+    modalBox.innerText =
       activePlayer === ActivePlayer.O ? "O Player won" : "X Player won ";
 
     modal.addEventListener("click", () => {
-      modal.classList.remove("modal-container");
+      modal.classList.toggle("hidden");
+      modalBox.innerText = "";
       this.resetGame();
     });
   }
@@ -108,13 +97,19 @@ export class Board {
   resetGame() {
     const tiles = document.querySelectorAll(".tile");
     tiles.forEach((tile) => {
-      if (tile.classList.contains("tileX")) tile.classList.remove("tileX");
-      if (tile.classList.contains("tileO")) tile.classList.remove("tileO");
+      if (tile.classList.contains("cross")) tile.classList.remove("cross");
+      if (tile.classList.contains("circle")) tile.classList.remove("circle");
       return;
     });
 
     this.chosenNumbers.O.splice(0, this.chosenNumbers.O.length);
     this.chosenNumbers.X.splice(0, this.chosenNumbers.X.length);
+  }
+
+  headerContent() {
+    const header = document.querySelector(".header") as HTMLHeadingElement;
+    header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
+    console.log(header);
   }
 }
 
