@@ -22,7 +22,7 @@ export class Board {
   constructor() {
     this.buildTiles();
     this.onTileClick();
-    this.headerContent();
+    this.changeHeaderContent();
   }
 
   buildTiles() {
@@ -75,12 +75,15 @@ export class Board {
   }
 
   playerClicked(playerAction: PlayerAction) {
+    this.changeHeaderContent();
     playerAction.tile.classList.add(
       `${this.active === ActivePlayer.X ? "cross" : "circle"}`
     );
+
     const dataNumber = playerAction.tile.getAttribute("data-number");
     playerAction.chosenNumbersByPlayer.push(dataNumber!);
     this.chosenNumbers.total.push(dataNumber!);
+
     const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
     const isDraw = !playerWon && this.checkDraw();
     if (playerWon || isDraw) this.showModal(this.active, isDraw);
@@ -123,7 +126,7 @@ export class Board {
     this.chosenNumbers.total.splice(0, this.chosenNumbers.total.length);
   }
 
-  headerContent() {
+  changeHeaderContent() {
     const header = document.querySelector(".header") as HTMLHeadingElement;
     header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
   }

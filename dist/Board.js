@@ -18,7 +18,7 @@ export class Board {
         ];
         this.buildTiles();
         this.onTileClick();
-        this.headerContent();
+        this.changeHeaderContent();
     }
     buildTiles() {
         for (let index = 0; index < this.boardTiles; index++) {
@@ -67,6 +67,7 @@ export class Board {
             this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
     }
     playerClicked(playerAction) {
+        this.changeHeaderContent();
         playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "cross" : "circle"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
         playerAction.chosenNumbersByPlayer.push(dataNumber);
@@ -108,7 +109,7 @@ export class Board {
         this.chosenNumbers.X.splice(0, this.chosenNumbers.X.length);
         this.chosenNumbers.total.splice(0, this.chosenNumbers.total.length);
     }
-    headerContent() {
+    changeHeaderContent() {
         const header = document.querySelector(".header");
         header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
     }
