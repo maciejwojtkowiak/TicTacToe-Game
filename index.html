@@ -6,14 +6,18 @@
     <link rel="stylesheet" href="styles.css" />
     <title>HTML 5 Boilerplate</title>
   </head>
+
   <body>
     <div class="container">
-      <div class="center">
-        <div class="root"></div>
-        <div class="test"></div>
+      <div><h1 class="header"></h1></div>
+      <div class="root"></div>
+      
       </div>
     </div>
-
-    <script defer src="./dist/app.js" />
+    <div class="modal hidden">
+      <div class="modal-box"><button class="restart-button">Restart</button>
+        </div>
+    </div>
+    <script type="module" src="./dist/Board.js" defer />
   </body>
 </html>
