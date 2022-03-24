@@ -75,6 +75,11 @@ export class Board {
   }
 
   playerClicked(playerAction: PlayerAction) {
+    const hasTileBeenChosen = this.chosenNumbers.total.find(
+      (numberOfTile) => numberOfTile === playerAction.tile.dataset.number
+    );
+
+    if (hasTileBeenChosen) return;
     this.changeHeaderContent();
     playerAction.tile.classList.add(
       `${this.active === ActivePlayer.X ? "cross" : "circle"}`
@@ -86,18 +91,20 @@ export class Board {
 
     const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
     const isDraw = !playerWon && this.checkDraw();
-    if (playerWon || isDraw) this.showModal(this.active, isDraw);
+    if (playerWon || isDraw) this.showModal(isDraw);
   }
 
-  showModal(activePlayer: ActivePlayer, isDraw: boolean) {
+  showModal(isDraw: boolean) {
     const modal = document.querySelector(".modal") as HTMLDivElement;
-    const modalBox = document.querySelector(".modal-box") as HTMLDivElement;
+    const modalMessage = document.querySelector(
+      ".modal-message"
+    ) as HTMLDivElement;
     const restartButton = document.querySelector(
       ".restart-button"
     ) as HTMLButtonElement;
 
     const message = document.createElement("p");
-    modalBox.appendChild(message);
+    modalMessage.appendChild(message);
 
     modal.classList.remove("hidden");
     if (!isDraw) {

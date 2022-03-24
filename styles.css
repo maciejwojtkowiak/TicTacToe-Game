@@ -20,7 +20,7 @@ body {
 }
 
 .tile {
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.582);
 }
 
 .root {
@@ -94,18 +94,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column-reverse;
-  background-color: rgb(255, 145, 0);
+  flex-direction: column;
+  background-image: linear-gradient(to right, white, gray);
   height: 30vh;
   width: 30vw;
 }
 
+.modal-message {
+  font-size: 3rem;
+}
+
 .restart-button {
+  padding: 0.5rem 1rem;
   border: none;
   background-color: white;
   transform: translateY(0);
-  transition: translate 0.5s;
+  transition: transform 0.5s;
 }
-.restart-button:active {
-  transform: translateY(-5px);
+.restart-button:hover {
+  transform: translateY(-3px);
 }

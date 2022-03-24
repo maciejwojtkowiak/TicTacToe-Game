@@ -67,6 +67,9 @@ export class Board {
             this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
     }
     playerClicked(playerAction) {
+        const hasTileBeenChosen = this.chosenNumbers.total.find((numberOfTile) => numberOfTile === playerAction.tile.dataset.number);
+        if (hasTileBeenChosen)
+            return;
         this.changeHeaderContent();
         playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "cross" : "circle"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
@@ -75,14 +78,14 @@ export class Board {
         const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
         const isDraw = !playerWon && this.checkDraw();
         if (playerWon || isDraw)
-            this.showModal(this.active, isDraw);
+            this.showModal(isDraw);
     }
-    showModal(activePlayer, isDraw) {
+    showModal(isDraw) {
         const modal = document.querySelector(".modal");
-        const modalBox = document.querySelector(".modal-box");
+        const modalMessage = document.querySelector(".modal-message");
         const restartButton = document.querySelector(".restart-button");
         const message = document.createElement("p");
-        modalBox.appendChild(message);
+        modalMessage.appendChild(message);
         modal.classList.remove("hidden");
         if (!isDraw) {
             message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;
