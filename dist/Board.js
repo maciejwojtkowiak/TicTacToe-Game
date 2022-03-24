@@ -85,7 +85,7 @@ export class Board {
         modalBox.appendChild(message);
         modal.classList.remove("hidden");
         if (!isDraw) {
-            message.innerText = `${activePlayer} has won`;
+            message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;
         }
         if (isDraw) {
             message.innerText = "Draw";

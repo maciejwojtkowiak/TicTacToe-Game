@@ -95,11 +95,13 @@ export class Board {
     const restartButton = document.querySelector(
       ".restart-button"
     ) as HTMLButtonElement;
+
     const message = document.createElement("p");
     modalBox.appendChild(message);
+
     modal.classList.remove("hidden");
     if (!isDraw) {
-      message.innerText = `${activePlayer} has won`;
+      message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;
     }
 
     if (isDraw) {
