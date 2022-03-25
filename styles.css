@@ -95,7 +95,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: linear-gradient(to right, white, gray);
+  background-image: linear-gradient(to bottom right, white, rgb(238, 238, 238));
   height: 30vh;
   width: 30vw;
 }
@@ -107,9 +107,11 @@ body {
 .restart-button {
   padding: 0.5rem 1rem;
   border: none;
-  background-color: white;
+  font-size: 2rem;
+  background-color: rgb(255, 208, 0);
   transform: translateY(0);
   transition: transform 0.5s;
+  color: white;
 }
 .restart-button:hover {
   transform: translateY(-3px);

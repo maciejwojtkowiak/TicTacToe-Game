@@ -75,11 +75,11 @@ export class Board {
   }
 
   playerClicked(playerAction: PlayerAction) {
-    const hasTileBeenChosen = this.chosenNumbers.total.find(
+    const tileHasBeenChosen = this.chosenNumbers.total.find(
       (numberOfTile) => numberOfTile === playerAction.tile.dataset.number
     );
 
-    if (hasTileBeenChosen) return;
+    if (tileHasBeenChosen) return;
     this.changeHeaderContent();
     playerAction.tile.classList.add(
       `${this.active === ActivePlayer.X ? "cross" : "circle"}`
