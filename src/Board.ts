@@ -52,13 +52,13 @@ export class Board {
     this.rootContainer.addEventListener("click", (e: Event) => {
       const tile = e.target as HTMLDivElement;
       if (tile.classList.contains("tile")) {
-        if (this.active === ActivePlayer.O) {
+        if (ActivePlayer.O) {
           this.playerClicked({
             tile: tile,
             chosenNumbersByPlayer: this.chosenNumbers.O,
           });
         }
-        if (this.active === ActivePlayer.X) {
+        if (ActivePlayer.X) {
           this.playerClicked({
             tile: tile,
             chosenNumbersByPlayer: this.chosenNumbers.X,
@@ -70,8 +70,7 @@ export class Board {
   }
 
   changePlayer() {
-    this.active =
-      this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
+    this.active = ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
   }
 
   playerClicked(playerAction: PlayerAction) {
@@ -81,9 +80,7 @@ export class Board {
 
     if (tileHasBeenChosen) return;
     this.changeHeaderContent();
-    playerAction.tile.classList.add(
-      `${this.active === ActivePlayer.X ? "cross" : "circle"}`
-    );
+    playerAction.tile.classList.add(`${ActivePlayer.X ? "cross" : "circle"}`);
 
     const dataNumber = playerAction.tile.getAttribute("data-number");
     playerAction.chosenNumbersByPlayer.push(dataNumber!);
@@ -108,7 +105,7 @@ export class Board {
 
     modal.classList.remove("hidden");
     if (!isDraw) {
-      message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;
+      message.innerText = `${ActivePlayer.O ? "X" : "O"} player has won`;
     }
 
     if (isDraw) {
@@ -137,7 +134,7 @@ export class Board {
 
   changeHeaderContent() {
     const header = document.querySelector(".header") as HTMLHeadingElement;
-    header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
+    header.innerText = `It is ${ActivePlayer.O ? "X" : "O"} player turn!`;
   }
 }
 
