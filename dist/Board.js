@@ -45,7 +45,10 @@ export class Board {
     onTileClick() {
         this.rootContainer.addEventListener("click", (e) => {
             const tile = e.target;
-            if (tile.classList.contains("tile")) {
+            console.log(tile.classList.contains("cross" || "circle"));
+            if (tile.classList.contains("tile") &&
+                !tile.classList.contains("cross") &&
+                !tile.classList.contains("circle")) {
                 if (this.active === ActivePlayer.O) {
                     this.playerClicked({
                         tile: tile,
@@ -58,8 +61,8 @@ export class Board {
                         chosenNumbersByPlayer: this.chosenNumbers.X,
                     });
                 }
+                this.changePlayer();
             }
-            this.changePlayer();
         });
     }
     changePlayer() {
@@ -75,14 +78,12 @@ export class Board {
         const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
         const isDraw = !playerWon && this.checkDraw();
         if (playerWon || isDraw)
-            this.showModal(this.active, isDraw);
+            this.showModal(isDraw);
     }
-    showModal(activePlayer, isDraw) {
+    showModal(isDraw) {
         const modal = document.querySelector(".modal");
-        const modalBox = document.querySelector(".modal-box");
         const restartButton = document.querySelector(".restart-button");
-        const message = document.createElement("p");
-        modalBox.appendChild(message);
+        const message = document.querySelector(".message");
         modal.classList.remove("hidden");
         if (!isDraw) {
             message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;

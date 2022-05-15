@@ -51,7 +51,12 @@ export class Board {
   onTileClick() {
     this.rootContainer.addEventListener("click", (e: Event) => {
       const tile = e.target as HTMLDivElement;
-      if (tile.classList.contains("tile")) {
+      console.log(tile.classList.contains("cross" || "circle"));
+      if (
+        tile.classList.contains("tile") &&
+        !tile.classList.contains("cross") &&
+        !tile.classList.contains("circle")
+      ) {
         if (this.active === ActivePlayer.O) {
           this.playerClicked({
             tile: tile,
@@ -64,8 +69,8 @@ export class Board {
             chosenNumbersByPlayer: this.chosenNumbers.X,
           });
         }
+        this.changePlayer();
       }
-      this.changePlayer();
     });
   }
 
@@ -76,6 +81,7 @@ export class Board {
 
   playerClicked(playerAction: PlayerAction) {
     this.changeHeaderContent();
+
     playerAction.tile.classList.add(
       `${this.active === ActivePlayer.X ? "cross" : "circle"}`
     );
@@ -86,18 +92,17 @@ export class Board {
 
     const playerWon = this.checkWinner(playerAction.chosenNumbersByPlayer);
     const isDraw = !playerWon && this.checkDraw();
-    if (playerWon || isDraw) this.showModal(this.active, isDraw);
+    if (playerWon || isDraw) this.showModal(isDraw);
   }
 
-  showModal(activePlayer: ActivePlayer, isDraw: boolean) {
+  showModal(isDraw: boolean) {
     const modal = document.querySelector(".modal") as HTMLDivElement;
-    const modalBox = document.querySelector(".modal-box") as HTMLDivElement;
+
     const restartButton = document.querySelector(
       ".restart-button"
     ) as HTMLButtonElement;
 
-    const message = document.createElement("p");
-    modalBox.appendChild(message);
+    const message = document.querySelector(".message") as HTMLHeadingElement;
 
     modal.classList.remove("hidden");
     if (!isDraw) {
