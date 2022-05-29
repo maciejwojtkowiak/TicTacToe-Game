@@ -46,13 +46,13 @@ export class Board {
         this.rootContainer.addEventListener("click", (e) => {
             const tile = e.target;
             if (tile.classList.contains("tile")) {
-                if (this.active === ActivePlayer.O) {
+                if (ActivePlayer.O) {
                     this.playerClicked({
                         tile: tile,
                         chosenNumbersByPlayer: this.chosenNumbers.O,
                     });
                 }
-                if (this.active === ActivePlayer.X) {
+                if (ActivePlayer.X) {
                     this.playerClicked({
                         tile: tile,
                         chosenNumbersByPlayer: this.chosenNumbers.X,
@@ -63,15 +63,14 @@ export class Board {
         });
     }
     changePlayer() {
-        this.active =
-            this.active === ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
+        this.active = ActivePlayer.X ? ActivePlayer.O : ActivePlayer.X;
     }
     playerClicked(playerAction) {
         const tileHasBeenChosen = this.chosenNumbers.total.find((numberOfTile) => numberOfTile === playerAction.tile.dataset.number);
         if (tileHasBeenChosen)
             return;
         this.changeHeaderContent();
-        playerAction.tile.classList.add(`${this.active === ActivePlayer.X ? "cross" : "circle"}`);
+        playerAction.tile.classList.add(`${ActivePlayer.X ? "cross" : "circle"}`);
         const dataNumber = playerAction.tile.getAttribute("data-number");
         playerAction.chosenNumbersByPlayer.push(dataNumber);
         this.chosenNumbers.total.push(dataNumber);
@@ -88,7 +87,7 @@ export class Board {
         modalMessage.appendChild(message);
         modal.classList.remove("hidden");
         if (!isDraw) {
-            message.innerText = `${this.active === 0 ? "X" : "O"} player has won`;
+            message.innerText = `${ActivePlayer.O ? "X" : "O"} player has won`;
         }
         if (isDraw) {
             message.innerText = "Draw";
@@ -114,7 +113,7 @@ export class Board {
     }
     changeHeaderContent() {
         const header = document.querySelector(".header");
-        header.innerText = `It is ${this.active === 1 ? "X" : "O"} player turn!`;
+        header.innerText = `It is ${ActivePlayer.O ? "X" : "O"} player turn!`;
     }
 }
 new Board();
