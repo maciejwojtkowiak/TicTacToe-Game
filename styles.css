@@ -104,6 +104,10 @@ body {
   border-radius: 10rem;
 }
 
+.message {
+  color: white;
+}
+
 .restart-button {
   border: none;
   background-color: white;
